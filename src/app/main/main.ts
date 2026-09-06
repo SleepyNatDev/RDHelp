@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   imports: [MatCard, MatButton, RouterLink],
@@ -10,5 +10,4 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './main.html',
 })
 export class Main {
-  constructor(private router: Router) {}
 }

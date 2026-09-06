@@ -1,1 +1,50 @@
-<p>bmi-calc works!</p>
+<mat-label>in</mat-label>
+<mat-slide-toggle class="gimmeSpace" name="units" [(ngModel)]="checked"></mat-slide-toggle>
+<mat-label>cm</mat-label>
+<mat-card>
+    <mat-card-content>
+        <div [hidden]="checked">
+            <form #fu="ngForm" (ngSubmit)="submitFreedomUnits()">
+                <mat-form-field>
+                    <mat-label>ft</mat-label>
+                    <input matInput type="number" pattern="^\d$" name="height-feet" [(ngModel)]="height_ft" required #ft="ngModel">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>in</mat-label>
+                    <input matInput type="number" pattern="^\d*(\.\d{0,2})?$" name="height-inches" [(ngModel)]="height_in" required #inches="ngModel">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>lbs</mat-label>
+                    <input matInput type="number" pattern="^\d*(\.\d{0,2})?$" name="weight-lbs" [(ngModel)]="weight_lbs" required #lbs="ngModel">
+                </mat-form-field>
+                <div *ngIf="(ft.invalid && (ft.dirty || ft.touched)) || 
+                    (inches.invalid && (inches.dirty || inches.touched)) || 
+                    (lbs.invalid && (lbs.dirty || lbs.touched))" class="alert">Please fill all fields.</div>
+                <button matButton [disabled]="fu.invalid">Calculate</button>
+            </form>
+        </div>
+        <div [hidden]="!checked">
+            <form #mu="ngForm" (ngSubmit)="submitMetricUnits()">
+                <mat-form-field>
+                    <mat-label>cm</mat-label>
+                    <input matInput type="number" pattern="^\d*(\.\d{0,2})?$" name="height-cm" [(ngModel)]="height_cm" required #cm="ngModel">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>kgs</mat-label>
+                    <input matInput type="number" pattern="^\d*(\.\d{0,2})?$" name="weight-kg" [(ngModel)]="weight_kgs" required #kgs="ngModel">
+                </mat-form-field>
+                <div *ngIf="(cm.invalid && (cm.dirty || cm.touched)) ||
+                    (kgs.invalid && (kgs.dirty || kgs.touched))">Invalid</div>
+                <button matButton [disabled]="mu.invalid">Calculate</button>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>
+<br>
+<div [hidden]="kgpm == 0">
+    <mat-card>
+        <mat-card-content>
+            <mat-label>{{kgpm | number: '1.2-2'}}kg/m<sup>2</sup></mat-label>
+        </mat-card-content>
+    </mat-card>
+</div>
