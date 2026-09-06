@@ -37,3 +37,25 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+.matchBg {
+    @include mat.table-overrides((
+        background-color: var(--mat-sys-surface-container-low)
+    ));
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-content {
+    flex: 1;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.gimmeSpace {
+    margin: 6px;
+}
