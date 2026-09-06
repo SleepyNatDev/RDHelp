@@ -7,19 +7,19 @@
             <form #fu="ngForm" (ngSubmit)="submitFreedomUnits()">
                 <mat-form-field>
                     <mat-label>ft</mat-label>
-                    <input matInput type="number" pattern="^\d$" name="height-feet" [(ngModel)]="height_ft" required #ft="ngModel">
+                    <input matInput pattern="^\d*$" name="height-feet" [(ngModel)]="height_ft" required #ft="ngModel">
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>in</mat-label>
-                    <input matInput type="number" pattern="^\d*(\.\d{0,2})?$" name="height-inches" [(ngModel)]="height_in" required #inches="ngModel">
+                    <input matInput pattern="^\d*(\.\d{0,2})?$" name="height-inches" [(ngModel)]="height_in" required #inches="ngModel">
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>lbs</mat-label>
-                    <input matInput type="number" pattern="^\d*(\.\d{0,2})?$" name="weight-lbs" [(ngModel)]="weight_lbs" required #lbs="ngModel">
+                    <input matInput pattern="^\d*(\.\d{0,2})?$" name="weight-lbs" [(ngModel)]="weight_lbs" required #lbs="ngModel">
                 </mat-form-field>
-                <div *ngIf="(ft.invalid && (ft.dirty || ft.touched)) || 
+                <div [hidden]="!(ft.invalid && (ft.dirty || ft.touched)) || 
                     (inches.invalid && (inches.dirty || inches.touched)) || 
-                    (lbs.invalid && (lbs.dirty || lbs.touched))" class="alert">Please fill all fields.</div>
+                    (lbs.invalid && (lbs.dirty || lbs.touched))" class="alert">Invalid values.</div>
                 <button matButton [disabled]="fu.invalid">Calculate</button>
             </form>
         </div>
@@ -27,21 +27,21 @@
             <form #mu="ngForm" (ngSubmit)="submitMetricUnits()">
                 <mat-form-field>
                     <mat-label>cm</mat-label>
-                    <input matInput type="number" pattern="^\d*(\.\d{0,2})?$" name="height-cm" [(ngModel)]="height_cm" required #cm="ngModel">
+                    <input matInput pattern="^\d*(\.\d{0,2})?$" name="height-cm" [(ngModel)]="height_cm" required #cm="ngModel">
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>kgs</mat-label>
-                    <input matInput type="number" pattern="^\d*(\.\d{0,2})?$" name="weight-kg" [(ngModel)]="weight_kgs" required #kgs="ngModel">
+                    <input matInput pattern="^\d*(\.\d{0,2})?$" name="weight-kg" [(ngModel)]="weight_kgs" required #kgs="ngModel">
                 </mat-form-field>
-                <div *ngIf="(cm.invalid && (cm.dirty || cm.touched)) ||
-                    (kgs.invalid && (kgs.dirty || kgs.touched))">Invalid</div>
+                <div [hidden]="!(cm.invalid && (cm.dirty || cm.touched)) || 
+                    (kgs.invalid && (kgs.dirty || kgs.touched))" class="alert">Invalid values.</div>
                 <button matButton [disabled]="mu.invalid">Calculate</button>
             </form>
         </div>
     </mat-card-content>
 </mat-card>
 <br>
-<div [hidden]="kgpm == 0">
+<div [hidden]="kgpm == 0 || isNaN(kgpm)">
     <mat-card>
         <mat-card-content>
             <mat-label>{{kgpm | number: '1.2-2'}}kg/m<sup>2</sup></mat-label>

@@ -1,1 +1,36 @@
-<p>exchanges-calc works!</p>
+<mat-card>
+    <mat-card-content>
+        <div>
+            <form #fu="ngForm" (ngSubmit)="submitExchanges()">
+                <mat-form-field>
+                    <mat-label>Starch</mat-label>
+                    <input matInput pattern="^\d*$" name="height-feet" [(ngModel)]="starch_exch" required #ft="ngModel">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Vegitables</mat-label>
+                    <input matInput pattern="^\d*$" name="height-inches" [(ngModel)]="veg_exch" required #inches="ngModel">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Fruit</mat-label>
+                    <input matInput pattern="^\d*$" name="weight-lbs" [(ngModel)]="fruit_exch" required #lbs="ngModel">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Milk</mat-label>
+                    <input matInput pattern="^\d*$" name="weight-lbs" [(ngModel)]="milk_exch" required #lbs="ngModel">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Meat</mat-label>
+                    <input matInput pattern="^\d*$" name="weight-lbs" [(ngModel)]="meat_exch" required #lbs="ngModel">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Fat</mat-label>
+                    <input matInput pattern="^\d*$" name="weight-lbs" [(ngModel)]="fat_exch" required #lbs="ngModel">
+                </mat-form-field>
+                <div [hidden]="!(ft.invalid && (ft.dirty || ft.touched)) || 
+                    (inches.invalid && (inches.dirty || inches.touched)) || 
+                    (lbs.invalid && (lbs.dirty || lbs.touched))" class="alert">Invalid values.</div>
+                <button matButton [disabled]="fu.invalid">Calculate</button>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

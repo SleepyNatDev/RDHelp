@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { MatFormField, MatFormFieldControl, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardModule } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   imports: [MatFormField, MatSlideToggle, FormsModule, CommonModule, MatLabel, MatInput, MatButton,
@@ -21,28 +20,39 @@ export class BmiCalc {
   checked = false;
 
   //Freedom Units
-  height_in = 0;
-  height_ft = 0;
-  weight_lbs = 0;
+  height_in: string | number = '';
+  height_ft: string | number = '';
+  weight_lbs: string | number = '';
   
   //Metric Units
-  height_cm = 0;
-  weight_kgs = 0;
+  height_cm: string | number = '';
+  weight_kgs: string | number = '';
 
   //results
   kgpm = 0;
 
   submitFreedomUnits() {
-    this.height_cm = this.truncateTwoDecimals(((this.height_ft * 12) + this.height_in) * 2.54);
-    this.weight_kgs = this.truncateTwoDecimals((this.weight_lbs / 2.205));
-    this.kgpm = this.truncateTwoDecimals((this.weight_lbs / Math.pow(this.height_ft * 12 + this.height_in, 2)) * 703);
+    var validIn: number = +this.height_in;
+    var validFt: number = +this.height_ft;
+    var validLbs: number = +this.weight_lbs;
+    var validCm: number = (validFt * 12 + validIn) * 2.54;
+    var validKgs: number = (validLbs / 2.205);
+    this.height_cm = this.truncateTwoDecimals(validCm);
+    this.weight_kgs = validKgs = this.truncateTwoDecimals(validKgs);
+    this.kgpm = this.truncateTwoDecimals(validKgs / Math.pow(validCm / 100, 2));
   }
 
   submitMetricUnits() {
-    this.height_in = this.truncateTwoDecimals(this.height_cm / 2.54 - (Math.floor((this.height_cm / 2.54) / 12) * 12));
-    this.height_ft = this.truncateTwoDecimals(Math.floor((this.height_cm / 2.54) / 12));
-    this.weight_lbs = this.truncateTwoDecimals(this.weight_kgs * 2.205);
-    this.kgpm = this.truncateTwoDecimals(this.weight_kgs / Math.pow(this.height_cm / 100, 2));
+    var validCm: number = +this.height_cm;
+    var validKgs: number = +this.weight_kgs;
+    this.height_in = this.truncateTwoDecimals(validCm / 2.54 - (Math.floor((validCm / 2.54) / 12) * 12));
+    this.height_ft = this.truncateTwoDecimals(Math.floor((validCm / 2.54) / 12));
+    this.weight_lbs = this.truncateTwoDecimals(validKgs * 2.205);
+    this.kgpm = this.truncateTwoDecimals(validKgs / Math.pow(validCm / 100, 2));
+  }
+
+  isNaN(value: number): boolean {
+    return Number.isNaN(value);
   }
 
   truncateTwoDecimals(input:number) {
