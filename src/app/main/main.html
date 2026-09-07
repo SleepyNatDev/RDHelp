@@ -1,24 +1,26 @@
-<mat-card class="gimmeSpace">
-    <div class="page-nav">
-        <a [routerLink]="['/bmi-calc']">
-            <button matButton>
-                BMI Calculator
-            </button>
-        </a>
-        <a routerLink="/exchanges-calc">
-            <button matButton>
-                Exchanges Calculator
-            </button>
-        </a>
-        <a routerLink="/meal-plans">
-            <button matButton>
-                Meal Plans
-            </button>
-        </a>
-        <a routerLink="/recipes">
-            <button matButton>
-                Recipes
-            </button>
-        </a>
-    </div>
+<mat-card class="flex flex-vertical gimmeSpace">
+    <mat-card-content>
+        <div class="page-nav">
+            <a [routerLink]="['/bmi-calc']">
+                <button matButton>
+                    BMI Calculator
+                </button>
+            </a>
+            <a routerLink="/exchanges-calc">
+                <button matButton>
+                    Exchanges Calculator
+                </button>
+            </a>
+            <a routerLink="/meal-plans">
+                <button matButton>
+                    Meal Plans
+                </button>
+            </a>
+            <a routerLink="/recipes">
+                <button matButton>
+                    Recipes
+                </button>
+            </a>
+        </div>
+    </mat-card-content>
 </mat-card>

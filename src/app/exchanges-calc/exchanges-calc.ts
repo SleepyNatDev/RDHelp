@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
@@ -9,19 +9,21 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 
 @Component({
-  imports: [MatFormField, MatSlideToggle, FormsModule, CommonModule, MatLabel, MatInput, MatButton,
+  imports: [MatFormField, FormsModule, CommonModule, MatLabel, MatInput, MatButton,
     MatCardModule, MatTableModule],
   selector: 'app-exchanges-calc',
   styleUrl: './exchanges-calc.scss',
   templateUrl: './exchanges-calc.html',
 })
 export class ExchangesCalc {
+  @ViewChild('resultTable') resultTable!: ElementRef;
   starch_in: string | number = '';
   fruit_in: string | number = '';
   veg_in: string | number = '';
   milk_in: string | number = '';
   meat_in: string | number = '';
   fat_in: string | number = '';
+  checked = false;
 
   carbs_exch: exchanges = {
     label: 'Carbs',
@@ -120,9 +122,11 @@ export class ExchangesCalc {
 
     this.total_calories = Math.round(this.carbs_exch.calories) + Math.round(this.proteins_exch.calories) + Math.round(this.fats_exch.calories);
 
-    this.carbs_exch.percent = 100 * (this.carbs_exch.calories / this.total_calories);
-    this.proteins_exch.percent = 100 * (this.proteins_exch.calories / this.total_calories);
-    this.fats_exch.percent = 100 * (this.fats_exch.calories / this.total_calories);
+    this.carbs_exch.percent = this.total_calories == 0 ? 0 : 100 * (this.carbs_exch.calories / this.total_calories);
+    this.proteins_exch.percent = this.total_calories == 0 ? 0 : 100 * (this.proteins_exch.calories / this.total_calories);
+    this.fats_exch.percent = this.total_calories == 0 ? 0 : 100 * (this.fats_exch.calories / this.total_calories);
+
+    this.resultTable.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
   resetExcanges() {

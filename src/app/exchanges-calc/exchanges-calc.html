@@ -1,40 +1,40 @@
-<div class="flex">
+<div class="flex flex-horizontal">
     <mat-card class="gimmeSpace flex-content">
         <mat-card-content>
             <div>
-                <form #f="ngForm" (ngSubmit)="submitExchanges()">
+                <form #exchForm="ngForm" (ngSubmit)="submitExchanges()">
                     <mat-form-field>
                         <mat-label>Starch</mat-label>
-                        <input matInput pattern="^\d*$" name="height-feet" [(ngModel)]="starch_in" required #starch="ngModel">
+                        <input matInput pattern="^\d*$" name="starch_in" [(ngModel)]="starch_in" #starch="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Vegetable</mat-label>
-                        <input matInput pattern="^\d*$" name="height-inches" [(ngModel)]="veg_in" required #veg="ngModel">
+                        <input matInput pattern="^\d*$" name="veg_in" [(ngModel)]="veg_in" #veg="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Fruit</mat-label>
-                        <input matInput pattern="^\d*$" name="weight-lbs" [(ngModel)]="fruit_in" required #fruit="ngModel">
+                        <input matInput pattern="^\d*$" name="fruit_in" [(ngModel)]="fruit_in" #fruit="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Milk</mat-label>
-                        <input matInput pattern="^\d*$" name="weight-lbs" [(ngModel)]="milk_in" required #milk="ngModel">
+                        <input matInput pattern="^\d*$" name="milk_in" [(ngModel)]="milk_in" #milk="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Meat</mat-label>
-                        <input matInput pattern="^\d*$" name="weight-lbs" [(ngModel)]="meat_in" required #meat="ngModel">
+                        <input matInput pattern="^\d*$" name="meat_in" [(ngModel)]="meat_in" #meat="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Fat</mat-label>
-                        <input matInput pattern="^\d*$" name="weight-lbs" [(ngModel)]="fat_in" required #fat="ngModel">
+                        <input matInput pattern="^\d*$" name="fat_in" [(ngModel)]="fat_in" #fat="ngModel">
                     </mat-form-field>
                     <div [hidden]="!(starch.invalid && (starch.dirty || starch.touched))" class="alert">Invalid values.</div>
-                    <button matButton [disabled]="f.invalid">Calculate</button>
+                    <button matButton [disabled]="exchForm.invalid">Calculate</button>
                 </form>
             </div>
         </mat-card-content>
     </mat-card>
-    <div class="flex-content gimmeSpace">
-        <mat-card class="flex-content">
+    <div #resultTable class="flex-content gimmeSpace">
+        <mat-card>
             <mat-card-content class="flex">
                 <table class="matchBg" mat-table [dataSource]="arrExchanges">
                     <ng-container matColumnDef="label">
@@ -57,7 +57,7 @@
 
                     <ng-container matColumnDef="percent">
                         <th mat-header-cell *matHeaderCellDef> Percent </th>
-                        <td mat-cell *matCellDef="let element"> {{ element.percent | number:'1.1-1' }}% </td>
+                        <td mat-cell *matCellDef="let element"> {{ element.percent | number:'1.0-1' }}% </td>
                         <td mat-footer-cell *matFooterCellDef></td>
                     </ng-container>
 

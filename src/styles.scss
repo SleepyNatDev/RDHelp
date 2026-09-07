@@ -38,18 +38,34 @@ body {
 }
 /* You can add global styles to this file, and also import other style files */
 .matchBg {
-    @include mat.table-overrides((
-        background-color: var(--mat-sys-surface-container-low)
-    ));
+  @include mat.table-overrides((
+    background-color: var(--mat-sys-surface-container-low)
+  ));
 }
 
 .flex {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-vertical {
+  align-items: center;
+}
+
+.flex-horizontal {
+  justify-content: center;
 }
 
 .flex-content {
-    flex: 1;
+  flex: 1;
+}
+
+.left {
+  left: 15px;
+}
+
+.container {
+    width:100vw;
 }
 
 .spacer {
@@ -57,5 +73,5 @@ body {
 }
 
 .gimmeSpace {
-    margin: 6px;
+  margin: 6px;
 }
