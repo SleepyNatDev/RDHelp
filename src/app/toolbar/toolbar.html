@@ -4,8 +4,8 @@
             <mat-icon>home</mat-icon>
         </button>
     </a>
-    <div ngbDropdown class="d-inline-block">
-        <button type="button" matButton id="calculators" ngbDropdownToggle>
+    <div ngbDropdown>
+        <button type="button" matButton ngbDropdownToggle>
             Calculators
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
@@ -26,5 +26,9 @@
             {{ this.darkMode() == true ? "bedtime" : "bedtime_off" }}
         </mat-icon>
     </button>
-    <button matButton>Login</button>
+    <a routerLink="/login">
+        <button matIconButton>
+            <mat-icon>login</mat-icon>
+        </button>
+    </a>
 </mat-toolbar>

@@ -5,12 +5,18 @@ import { ExchangesCalc } from './exchanges-calc/exchanges-calc';
 import { MealPlans } from './meal-plans/meal-plans';
 import { Recipes } from './recipes/recipes';
 import { MsjCalc } from './msj-calc/msj-calc';
+import { Login } from './login/login';
 
 export const routes: Routes = [
     {
         path: '',
         component: Main,
         title: 'RDHelp Home',
+    },
+    {
+        path: 'login',
+        component: Login,
+        title: 'Login - RDHelp',
     },
     {
         path: 'bmi-calc',

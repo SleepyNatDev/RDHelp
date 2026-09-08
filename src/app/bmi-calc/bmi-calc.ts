@@ -33,20 +33,21 @@ export class BmiCalc {
   //results
   kgpm = 0;
 
-  resetUnits() {
-    this.height_cm = '';
-    this.height_ft = '';
-    this.height_in = '';
-    this.weight_kgs = '';
-    this.weight_lbs = '';
-  }
-
   constructor(localStorageService: LocalStorage) {
     if (localStorageService.get('metric') == 'true')
       this.checked.set(true);
     effect(() => {
       localStorageService.save('metric', this.checked() ? 'true' : 'false');
     });
+  }
+
+  resetUnits() {
+    this.height_cm = '';
+    this.height_ft = '';
+    this.height_in = '';
+    this.weight_kgs = '';
+    this.weight_lbs = '';
+    this.kgpm = 0;
   }
 
   submitFreedomUnits() {
