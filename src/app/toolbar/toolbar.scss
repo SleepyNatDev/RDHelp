@@ -1,11 +1,27 @@
-.spacer {
-  flex: 1 1 auto;
-}
-
 mat-toolbar {
     background-color: var(--mat-sys-surface-variant);
+    border-bottom: 1px solid;
+    border-bottom-color: var(--mat-sys-outline-variant);
 }
 
 hr {
     margin-top: 0px;
+}
+
+.dropdown-item.active, .dropdown-item:active { 
+   background-color: unset;
+}
+
+.dropdown-item.hover, .dropdown-item:hover { 
+   background-color: unset;
+}
+
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-menu {
+    background-color: var(--mat-sys-surface);
+    border-color: var(--mat-sys-outline-variant);
 }

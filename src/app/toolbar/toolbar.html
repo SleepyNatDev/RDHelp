@@ -1,10 +1,30 @@
 <mat-toolbar>
-    <a [routerLink]="['/']">
+    <a routerLink="/">
         <button matIconButton>
             <mat-icon>home</mat-icon>
         </button>
     </a>
+    <div ngbDropdown class="d-inline-block">
+        <button type="button" matButton id="calculators" ngbDropdownToggle>
+            Calculators
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <a class="noUnderline flex-content" routerLink="/bmi-calc">
+                <button matButton ngbDropdownItem>BMI Calculator</button>
+            </a>
+            <a class="noUnderline flex-content" routerLink="/exchanges-calc">
+                <button matButton ngbDropdownItem>Exchanges Calculator</button>
+            </a>
+            <a class="noUnderline flex-content" routerLink="/msj-calc">
+                <button matButton ngbDropdownItem>Mifflin-St Jeor Calculator</button>
+            </a>
+        </div>
+    </div>
     <span class="spacer"></span>
+    <button matIconButton (click)="toggleDarkMode()">
+        <mat-icon>
+            {{ this.darkMode() == true ? "bedtime" : "bedtime_off" }}
+        </mat-icon>
+    </button>
     <button matButton>Login</button>
 </mat-toolbar>
-<hr>

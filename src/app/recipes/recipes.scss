@@ -8,6 +8,15 @@
     width: 250px;
 }
 
+.recipeImage {
+    height: 175px;
+    object-fit: cover;
+}
+
+.scroll-horizontal {
+    overflow-x: scroll;
+}
+
 .makeSomeSpace {
     padding: 16px;
 }

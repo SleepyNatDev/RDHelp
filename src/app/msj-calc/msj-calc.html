@@ -1,0 +1,98 @@
+<mat-slide-toggle class="gimmeSpace" name="units" [(ngModel)]="checked"></mat-slide-toggle>
+<mat-label>Metric</mat-label>
+<div class="flex">
+    <div class="flex-content">
+        <mat-card>
+            <mat-card-content>
+                <div [hidden]="checked()">
+                    <form #fu="ngForm" (ngSubmit)="submitFreedomUnits()" (reset)="resetUnits()">
+                        <mat-form-field>
+                            <mat-label>Assigned Sex</mat-label>
+                            <mat-select [(ngModel)]="assignedSex" required name="f-sex" #fuSex="ngModel">
+                                <mat-option value="1">Female</mat-option>
+                                <mat-option value="2">Male</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>ft</mat-label>
+                            <input matInput pattern="^\d*$" name="f-height-feet" [(ngModel)]="height_ft" required #ft="ngModel">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>in</mat-label>
+                            <input matInput pattern="^\d*(\.\d{0,1})?$" name="f-height-inches" [(ngModel)]="height_in" required #inches="ngModel">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>lbs</mat-label>
+                            <input matInput pattern="^\d*(\.\d{0,1})?$" name="f-weight-lbs" [(ngModel)]="weight_lbs" required #lbs="ngModel">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Age</mat-label>
+                            <input matInput pattern="^\d*$" name="f-age" [(ngModel)]="unit_age" required #fuAge="ngModel">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Activity Level</mat-label>
+                            <mat-select [(ngModel)]="activityLevel" required name="activeLevel" #activeLevel="ngModel">
+                                <mat-option value="1.2">Sedentary</mat-option>
+                                <mat-option value="1.375">Lightly Active</mat-option>
+                                <mat-option value="1.55">Moderately Active</mat-option>
+                                <mat-option value="1.725">Active</mat-option>
+                                <mat-option value="1.9">Very Active</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div [hidden]="!(ft.invalid && (ft.dirty || ft.touched)) || 
+                            (inches.invalid && (inches.dirty || inches.touched)) || 
+                            (lbs.invalid && (lbs.dirty || lbs.touched))" class="alert">Invalid values.</div>
+                        <button matButton [disabled]="fu.invalid">Calculate</button>
+                        <button matButton type="reset">Reset</button>
+                    </form>
+                </div>
+                <div [hidden]="!checked()">
+                    <form #mu="ngForm" (ngSubmit)="submitMetricUnits()" (reset)="resetUnits()">
+                        <mat-form-field>
+                            <mat-label>Assigned Sex</mat-label>
+                            <mat-select [(ngModel)]="assignedSex" required name="m-sex" #muSex="ngModel">
+                                <mat-option value="1">Female</mat-option>
+                                <mat-option value="2">Male</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>cm</mat-label>
+                            <input matInput pattern="^\d*(\.\d{0,1})?$" name="m-height-cm" [(ngModel)]="height_cm" required #cm="ngModel">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>kgs</mat-label>
+                            <input matInput pattern="^\d*(\.\d{0,1})?$" name="m-weight-kg" [(ngModel)]="weight_kgs" required #kgs="ngModel">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Age</mat-label>
+                            <input matInput pattern="^\d*$" name="m-age" [(ngModel)]="unit_age" required #muAge="ngModel">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Activity Level</mat-label>
+                            <mat-select [(ngModel)]="activityLevel" required name="mLevel" #muLevel="ngModel">
+                                <mat-option value="1.2">Sedentary</mat-option>
+                                <mat-option value="1.375">Lightly Active</mat-option>
+                                <mat-option value="1.55">Moderately Active</mat-option>
+                                <mat-option value="1.725">Active</mat-option>
+                                <mat-option value="1.9">Very Active</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div [hidden]="!(cm.invalid && (cm.dirty || cm.touched)) || 
+                            (kgs.invalid && (kgs.dirty || kgs.touched))" class="alert">Invalid values.</div>
+                        <button matButton type="submit" [disabled]="mu.invalid">Calculate</button>
+                        <button matButton type="reset">Reset</button>
+                    </form>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="flex-content" [hidden]="tdee == 0 || isNaN(tdee)">
+        <mat-card>
+            <mat-card-content>
+                <mat-label class="noWrap">BMR: {{bmr | number: '1.0-0'}} Kcal</mat-label>
+                <br>
+                <mat-label class="noWrap">TDEE: {{tdee | number: '1.0-0'}} Kcal</mat-label>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

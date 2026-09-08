@@ -2,7 +2,7 @@
     <mat-card class="gimmeSpace flex-content">
         <mat-card-content>
             <div>
-                <form #exchForm="ngForm" (ngSubmit)="submitExchanges()">
+                <form #exchForm="ngForm" (ngSubmit)="submitExchanges()" (reset)="resetUnits()">
                     <mat-form-field>
                         <mat-label>Starch</mat-label>
                         <input matInput pattern="^\d*$" name="starch_in" [(ngModel)]="starch_in" #starch="ngModel">
@@ -28,7 +28,8 @@
                         <input matInput pattern="^\d*$" name="fat_in" [(ngModel)]="fat_in" #fat="ngModel">
                     </mat-form-field>
                     <div [hidden]="!(starch.invalid && (starch.dirty || starch.touched))" class="alert">Invalid values.</div>
-                    <button matButton [disabled]="exchForm.invalid">Calculate</button>
+                    <button matButton type="submit" [disabled]="exchForm.invalid">Calculate</button>
+                    <button matButton type="reset">Reset</button>
                 </form>
             </div>
         </mat-card-content>

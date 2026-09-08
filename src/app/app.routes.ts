@@ -4,6 +4,7 @@ import { BmiCalc } from './bmi-calc/bmi-calc';
 import { ExchangesCalc } from './exchanges-calc/exchanges-calc';
 import { MealPlans } from './meal-plans/meal-plans';
 import { Recipes } from './recipes/recipes';
+import { MsjCalc } from './msj-calc/msj-calc';
 
 export const routes: Routes = [
     {
@@ -30,5 +31,10 @@ export const routes: Routes = [
         path: 'recipes',
         component: Recipes,
         title: 'Recipes',
+    },
+    {
+        path: 'msj-calc',
+        component: MsjCalc,
+        title: 'Mifflin-St Jeor Calculator',
     }
 ];

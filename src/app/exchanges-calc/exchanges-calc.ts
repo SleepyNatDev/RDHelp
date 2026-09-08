@@ -99,6 +99,17 @@ export class ExchangesCalc {
   arrExchanges = [this.carbs_exch, this.proteins_exch, this.fats_exch];
   displayedColumns: string[] = ['label', 'grams', 'calories', 'percent'];
 
+  resetUnits() {
+    this.resetExcanges();
+
+    this.starch_in = '';
+    this.fat_in = '';
+    this.veg_in = '';
+    this.meat_in = '';
+    this.milk_in = '';
+    this.fruit_in = '';
+  }
+
   submitExchanges() {
     this.resetExcanges();
     //starch calc
@@ -136,6 +147,12 @@ export class ExchangesCalc {
     this.proteins_exch.calories = 0;
     this.fats_exch.grams = 0;
     this.fats_exch.calories = 0;
+
+    this.carbs_exch.percent = 0;
+    this.proteins_exch.percent = 0;
+    this.fats_exch.percent = 0;
+
+    this.total_calories = 0;
   }
 
   addExchange(exch: exch_rates, valid_in: number) {

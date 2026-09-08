@@ -4,6 +4,8 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+/* Importing Bootstrap SCSS file. */
+@use 'bootstrap/scss/bootstrap' as bootsrap;
 
 html {
   height: 100%;
@@ -36,11 +38,17 @@ body {
   margin: 0;
   height: 100%;
 }
+body.dark-mode {
+  color-scheme: dark;
+}
+
 /* You can add global styles to this file, and also import other style files */
 .matchBg {
-  @include mat.table-overrides((
-    background-color: var(--mat-sys-surface-container-low)
-  ));
+  @include mat.table-overrides(
+    (
+      background-color: var(--mat-sys-surface-container-low),
+    )
+  );
 }
 
 .flex {
@@ -58,6 +66,7 @@ body {
 
 .flex-content {
   flex: 1;
+  margin: 6px;
 }
 
 .left {
@@ -65,7 +74,7 @@ body {
 }
 
 .container {
-    width:100vw;
+  width: 100vw;
 }
 
 .spacer {
@@ -74,4 +83,29 @@ body {
 
 .gimmeSpace {
   margin: 6px;
+}
+
+.giveMyKidsSpace > * {
+  margin: 6px;
+}
+
+.gimmePadding {
+  padding: 6px;
+}
+
+.noWrap {
+  text-wrap: nowrap;
+}
+
+.noUnderline {
+  text-decoration: none;
+}
+
+.scroll-horizontal {
+  .mdc-evolution-chip-set__chips {
+    display: flex;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    width: 100%; /* or specific width */
+  }
 }
