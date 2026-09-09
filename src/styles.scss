@@ -58,14 +58,23 @@ body.dark-mode {
   align-items: center;
 }
 
+.flex-dir-vertical {
+  flex-direction: column;
+}
+
 .flex-horizontal {
   justify-content: center;
+  text-align: center;
 }
 
 .flex-content {
   flex: 1;
   margin: 6px;
   flex-grow: 0;
+}
+
+.flex-start {
+  justify-content: flex-start;
 }
 
 .left {

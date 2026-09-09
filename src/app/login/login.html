@@ -1,1 +1,28 @@
-Login for admins only right now. If you are not an admin, please use the calculators in the toolbar above.
+<div class="flex flex-dir-vertical flex-horizontal">
+    <div class="flex-content flex flex-dir-vertical flex-horizontal">
+        <p class="flex-content">Login for admins only right now.</p>
+        <p class="flex-content">If you are not an admin, please use the calculators in the toolbar above.</p>
+    </div>
+    <div class="flex-content flex flex-horizontal">
+        <mat-card>
+            <mat-card-content>
+                <form>
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" name="email" />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Password</mat-label>
+                        <input matInput type="{{showPassword ? 'text' : 'password'}}" name="password" />
+                        <button mat-icon-button matSuffix (click)="showPassword = !showPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
+                            <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </form>
+            </mat-card-content>
+            <mat-card-actions>
+                <button matButton>Login</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
