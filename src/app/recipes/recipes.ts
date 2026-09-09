@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -16,6 +16,7 @@ import { AddRecipeDialog } from '../add-recipe-dialog/add-recipe-dialog';
 })
 export class Recipes {
   readonly dialog = inject(MatDialog);
+  readonly cdRef = inject(ChangeDetectorRef);
 
   test_tag1: Tag = {
     name: 'heart healthy'
@@ -70,6 +71,7 @@ export class Recipes {
         result.id = this.recipes_available.length;
         this.recipes_available.push(result);
         this.recipes_shown.set(this.recipes_available);
+        this.cdRef.detectChanges();
       }
     });
   }

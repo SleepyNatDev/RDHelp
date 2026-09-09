@@ -1,0 +1,22 @@
+form > mat-form-field {
+    display: block;
+}
+
+.file-input { 
+    display: none;
+}
+
+.file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    > mat-label {
+        max-width: 180px;
+        margin-right: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

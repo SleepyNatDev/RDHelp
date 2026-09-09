@@ -1,12 +1,47 @@
-<h2 mat-dialog-title>Hi {{data.recipe.name}}</h2>
+<h2 mat-dialog-title>New Recipe</h2>
 <mat-dialog-content>
-  <p>What's your favorite animal?</p>
-  <mat-form-field>
-    <mat-label>Favorite Animal</mat-label>
-    <input matInput [(ngModel)]="recipe().name" />
-  </mat-form-field>
+  <form #fu="ngForm">
+    <mat-form-field>
+      <mat-label>Recipe Name</mat-label>
+      <input matInput name="name" [(ngModel)]="recipe().name" />
+    </mat-form-field>
+    <input type="file" class="file-input" accept="image/png, image/jpeg" (change)="onFileSelected($event)" #fileUpload>
+    <div class="file-upload">
+
+      <mat-label class="elipses">{{fileName || "Select Image"}}</mat-label>
+
+      <button mat-mini-fab color="primary" class="upload-btn"
+        (click)="fileUpload.click()">
+          <mat-icon>attach_file</mat-icon>
+      </button>
+    </div>
+    <mat-form-field>
+      <mat-label>Recipe Description</mat-label>
+      <textarea matInput name="description" [(ngModel)]="recipe().description" ></textarea>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Tags</mat-label>
+      <mat-chip-grid #tagList>
+        <!-- Display existing tags -->
+        @for (tag of recipe().tags; track tag.name) {
+          <mat-chip [removable]="true" (removed)="removeTag(tag)">
+            {{ tag.name }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        }
+      </mat-chip-grid>
+      <!-- Input for new tags -->
+      <input 
+        matInput
+        #tagInput 
+        [matChipInputFor]="tagList" 
+        [matChipInputSeparatorKeyCodes]="separatorKeys" 
+        [matChipInputAddOnBlur]="true" 
+        (matChipInputTokenEnd)="addTag($event.value)" />
+    </mat-form-field>
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button matButton (click)="onNoClick()">No Thanks</button>
+  <button matButton (click)="onNoClick()">Cancel</button>
   <button matButton [mat-dialog-close]="data.recipe" cdkFocusInitial>Ok</button>
 </mat-dialog-actions>
