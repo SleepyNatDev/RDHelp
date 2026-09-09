@@ -15,19 +15,19 @@
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>ft</mat-label>
-                            <input matInput pattern="^\d*$" name="f-height-feet" [(ngModel)]="height_ft" required #ft="ngModel">
+                            <input matInput type="tel" pattern="^\d*$" name="f-height-feet" [(ngModel)]="height_ft" required #ft="ngModel">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>in</mat-label>
-                            <input matInput pattern="^\d*(\.\d{0,1})?$" name="f-height-inches" [(ngModel)]="height_in" required #inches="ngModel">
+                            <input matInput type="tel" pattern="^\d*(\.\d{0,1})?$" name="f-height-inches" [(ngModel)]="height_in" required #inches="ngModel">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>lbs</mat-label>
-                            <input matInput pattern="^\d*(\.\d{0,1})?$" name="f-weight-lbs" [(ngModel)]="weight_lbs" required #lbs="ngModel">
+                            <input matInput type="tel" pattern="^\d*(\.\d{0,1})?$" name="f-weight-lbs" [(ngModel)]="weight_lbs" required #lbs="ngModel">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Age</mat-label>
-                            <input matInput pattern="^\d*$" name="f-age" [(ngModel)]="unit_age" required #fuAge="ngModel">
+                            <input matInput type="tel" pattern="^\d*$" name="f-age" [(ngModel)]="unit_age" required #fuAge="ngModel">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Activity Level</mat-label>
@@ -57,15 +57,15 @@
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>cm</mat-label>
-                            <input matInput pattern="^\d*(\.\d{0,1})?$" name="m-height-cm" [(ngModel)]="height_cm" required #cm="ngModel">
+                            <input matInput type="tel" pattern="^\d*(\.\d{0,1})?$" name="m-height-cm" [(ngModel)]="height_cm" required #cm="ngModel">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>kgs</mat-label>
-                            <input matInput pattern="^\d*(\.\d{0,1})?$" name="m-weight-kg" [(ngModel)]="weight_kgs" required #kgs="ngModel">
+                            <input matInput type="tel" pattern="^\d*(\.\d{0,1})?$" name="m-weight-kg" [(ngModel)]="weight_kgs" required #kgs="ngModel">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Age</mat-label>
-                            <input matInput pattern="^\d*$" name="m-age" [(ngModel)]="unit_age" required #muAge="ngModel">
+                            <input matInput type="tel" pattern="^\d*$" name="m-age" [(ngModel)]="unit_age" required #muAge="ngModel">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Activity Level</mat-label>

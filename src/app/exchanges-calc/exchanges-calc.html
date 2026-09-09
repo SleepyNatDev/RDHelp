@@ -5,27 +5,27 @@
                 <form #exchForm="ngForm" (ngSubmit)="submitExchanges()" (reset)="resetUnits()">
                     <mat-form-field>
                         <mat-label>Starch</mat-label>
-                        <input matInput pattern="^\d*$" name="starch_in" [(ngModel)]="starch_in" #starch="ngModel">
+                        <input matInput type="tel" pattern="^\d*$" name="starch_in" [(ngModel)]="starch_in" #starch="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Vegetable</mat-label>
-                        <input matInput pattern="^\d*$" name="veg_in" [(ngModel)]="veg_in" #veg="ngModel">
+                        <input matInput type="tel" pattern="^\d*$" name="veg_in" [(ngModel)]="veg_in" #veg="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Fruit</mat-label>
-                        <input matInput pattern="^\d*$" name="fruit_in" [(ngModel)]="fruit_in" #fruit="ngModel">
+                        <input matInput type="tel" pattern="^\d*$" name="fruit_in" [(ngModel)]="fruit_in" #fruit="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Milk</mat-label>
-                        <input matInput pattern="^\d*$" name="milk_in" [(ngModel)]="milk_in" #milk="ngModel">
+                        <input matInput type="tel" pattern="^\d*$" name="milk_in" [(ngModel)]="milk_in" #milk="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Meat</mat-label>
-                        <input matInput pattern="^\d*$" name="meat_in" [(ngModel)]="meat_in" #meat="ngModel">
+                        <input matInput type="tel" pattern="^\d*$" name="meat_in" [(ngModel)]="meat_in" #meat="ngModel">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Fat</mat-label>
-                        <input matInput pattern="^\d*$" name="fat_in" [(ngModel)]="fat_in" #fat="ngModel">
+                        <input matInput type="tel" pattern="^\d*$" name="fat_in" [(ngModel)]="fat_in" #fat="ngModel">
                     </mat-form-field>
                     <div [hidden]="!(starch.invalid && (starch.dirty || starch.touched))" class="alert">Invalid values.</div>
                     <button matButton type="submit" [disabled]="exchForm.invalid">Calculate</button>
