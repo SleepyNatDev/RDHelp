@@ -6,14 +6,16 @@
       <input matInput name="name" [(ngModel)]="recipe().name" />
     </mat-form-field>
     <input type="file" class="file-input" accept="image/png, image/jpeg" (change)="onFileSelected($event)" #fileUpload>
-    <div class="file-upload">
-
-      <mat-label class="elipses">{{fileName || "Select Image"}}</mat-label>
-
-      <button mat-mini-fab color="primary" class="upload-btn"
-        (click)="fileUpload.click()">
-          <mat-icon>attach_file</mat-icon>
-      </button>
+    <div [hidden]="fileUploaded()">
+      <div class="file-upload clickable" appDndFiles (click)="fileUpload.click()" (dragover)="$event.preventDefault()" (drop)="onDrop($event)">
+        <mat-label class="elipses">Upload Image</mat-label>
+      </div>
+    </div>
+    <div [hidden]="!fileUploaded()">
+      <div class="file-upload">
+        <mat-label class="elipses">{{fileName}}</mat-label>
+        <mat-icon class="clickable" (click)="removeFile()">cancel</mat-icon>
+      </div>
     </div>
     <mat-form-field>
       <mat-label>Recipe Description</mat-label>

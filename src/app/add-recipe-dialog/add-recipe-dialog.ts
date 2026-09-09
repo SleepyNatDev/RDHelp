@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, model, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, model, signal, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { AddRecipeDialogData } from '../add-recipe-dialog-data';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,17 +33,30 @@ export class AddRecipeDialog {
   separatorKeys = [188, 13, 3]; // Comma and Windows + Mac Enter keys
 
   fileName: string = '';
+  fileUploaded = signal(false);
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.fileName = file.name;
+      this.fileUploaded.set(true);
     }
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      // Handle the dropped files here
+      console.log('Dropped files:', files);
+    }
   }
 
   submit(): void {
@@ -60,5 +73,10 @@ export class AddRecipeDialog {
 
   removeTag(tagToRemove: { name: string }): void {
     this.recipe().tags = this.recipe().tags.filter(tag => tag.name !== tagToRemove.name);
+  }
+
+  removeFile(): void {
+    this.fileName = '';
+    this.fileUploaded.set(false);
   }
 }
