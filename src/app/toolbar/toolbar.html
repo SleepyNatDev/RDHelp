@@ -4,21 +4,19 @@
             <mat-icon>home</mat-icon>
         </button>
     </a>
-    <div ngbDropdown>
-        <button type="button" matButton ngbDropdownToggle>
-            Calculators
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <a class="noUnderline flex-content" routerLink="/bmi-calc">
-                <button matButton ngbDropdownItem>BMI Calculator</button>
+    <div>
+        <button matButton [matMenuTriggerFor]="calcs">Calculators</button>
+        <mat-menu #calcs="matMenu">
+            <a class="noUnderline" routerLink="/bmi-calc">
+                <button mat-menu-item>BMI Calculator</button>
             </a>
-            <a class="noUnderline flex-content" routerLink="/exchanges-calc">
-                <button matButton ngbDropdownItem>Exchanges Calculator</button>
+            <a class="noUnderline" routerLink="/exchanges-calc">
+                <button mat-menu-item>Exchanges Calculator</button>
             </a>
-            <a class="noUnderline flex-content" routerLink="/msj-calc">
-                <button matButton ngbDropdownItem>Mifflin-St Jeor Calculator</button>
+            <a class="noUnderline" routerLink="/msj-calc">
+                <button mat-menu-item>Mifflin-St Jeor Calculator</button>
             </a>
-        </div>
+        </mat-menu>
     </div>
     <span class="spacer"></span>
     <button matIconButton (click)="toggleDarkMode()">

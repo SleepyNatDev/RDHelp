@@ -3,8 +3,8 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterLink } from "@angular/router";
-import { NgbDropdown, NgbDropdownButtonItem, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle } from '@ng-bootstrap/ng-bootstrap/dropdown';
 import { LocalStorage } from '../local-storage';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   imports: [
@@ -13,11 +13,7 @@ import { LocalStorage } from '../local-storage';
     MatIconButton, 
     MatIcon, 
     RouterLink,
-    NgbDropdown,
-    NgbDropdownToggle,
-    NgbDropdownMenu,
-    NgbDropdownItem,
-    NgbDropdownButtonItem
+    MatMenuModule
   ],
   selector: 'app-toolbar',
   styleUrl: './toolbar.scss',

@@ -4,8 +4,6 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
-/* Importing Bootstrap SCSS file. */
-@use 'bootstrap/scss/bootstrap' as bootsrap;
 
 html {
   height: 100%;
@@ -100,6 +98,10 @@ body.dark-mode {
 
 .noUnderline {
   text-decoration: none;
+}
+
+.on-top-1 {
+  z-index: 1;
 }
 
 .scroll-horizontal {
