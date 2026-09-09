@@ -77,6 +77,11 @@ body.dark-mode {
   justify-content: flex-start;
 }
 
+[hidden].mat-icon {
+    font-family: 'Material Icons' !important;
+    display: none; /* or display: none if you want to remove space */
+}
+
 .left {
   left: 15px;
 }

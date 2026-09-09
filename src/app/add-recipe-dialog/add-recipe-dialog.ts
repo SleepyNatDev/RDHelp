@@ -27,6 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class AddRecipeDialog {
   @ViewChild('tagInput') tagInput!: ElementRef;
+  @ViewChild('fileUpload') fileUpload!: ElementRef;
   readonly dialogRef = inject(MatDialogRef<AddRecipeDialog>);
   readonly data = inject<AddRecipeDialogData>(MAT_DIALOG_DATA);
   readonly recipe = model(this.data.recipe);
@@ -75,8 +76,17 @@ export class AddRecipeDialog {
     this.recipe().tags = this.recipe().tags.filter(tag => tag.name !== tagToRemove.name);
   }
 
+  handleFileUpload(): void {
+    if (!this.fileUploaded()) {
+      this.fileUpload.nativeElement.click();
+    }
+  }
+
   removeFile(): void {
     this.fileName = '';
-    this.fileUploaded.set(false);
+    // reset file input using timeout to avoid handleFileUpload being called immediately after file removal
+    setTimeout(() => {
+      this.fileUploaded.set(false);
+    });
   }
 }
