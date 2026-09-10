@@ -4,3 +4,19 @@ services:
     build: ./
     ports:
       - "8180:80"
+    networks:
+      - toolbelt
+    depends_on:
+      - rd-toolbelt-api
+
+  rd-toolbelt-api:
+    container_name: rd-toolbelt-api
+    build: ./server
+    ports:
+      - "8181:8181"
+    networks:
+      - toolbelt
+  
+networks:
+  toolbelt:
+    driver: bridge
