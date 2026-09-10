@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "RDHelp": {
+    "RDToolbelt": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "RDHelp:build:production"
+              "buildTarget": "RDToolbelt:build:production"
             },
             "development": {
-              "buildTarget": "RDHelp:build:development"
+              "buildTarget": "RDToolbelt:build:development"
             }
           },
           "defaultConfiguration": "development"

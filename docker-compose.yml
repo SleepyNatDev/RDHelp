@@ -1,6 +1,6 @@
 services:
-  rd-help:
-    container_name: rd-help
+  rd-toolbelt:
+    container_name: rd-toolbelt
     build: ./
     ports:
       - "8180:80"

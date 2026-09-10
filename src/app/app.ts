@@ -9,5 +9,5 @@ import { Toolbar } from './toolbar/toolbar';
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly title = signal('RDHelp');
+  protected readonly title = signal('RDToolbelt');
 }

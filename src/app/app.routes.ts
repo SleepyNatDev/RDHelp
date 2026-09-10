@@ -11,36 +11,36 @@ export const routes: Routes = [
     {
         path: '',
         component: Main,
-        title: 'RDHelp Home',
+        title: 'RDToolbelt Home',
     },
     {
         path: 'login',
         component: Login,
-        title: 'Login - RDHelp',
+        title: 'Login - RDToolbelt',
     },
     {
         path: 'bmi-calc',
         component: BmiCalc,
-        title: 'BMI Calculator',
+        title: 'BMI Calculator - RDToolbelt',
     },
     {
         path: 'exchanges-calc',
         component: ExchangesCalc,
-        title: 'Exchanges Calculator',
+        title: 'Exchanges Calculator - RDToolbelt',
     },
     {
         path: 'meal-plans',
         component: MealPlans,
-        title: 'Meal Plans',
+        title: 'Meal Plans - RDToolbelt',
     },
     {
         path: 'recipes',
         component: Recipes,
-        title: 'Recipes',
+        title: 'Recipes - RDToolbelt',
     },
     {
         path: 'msj-calc',
         component: MsjCalc,
-        title: 'Mifflin-St Jeor Calculator',
+        title: 'Mifflin-St Jeor Calculator - RDToolbelt',
     }
 ];
