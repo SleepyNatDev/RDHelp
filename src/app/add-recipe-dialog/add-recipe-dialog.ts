@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatChipGrid, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { RecipeService } from '../recipe-service';
+import { ImageService } from '../image-service';
 
 @Component({
   imports: [
@@ -36,12 +38,26 @@ export class AddRecipeDialog {
   fileName: string = '';
   fileUploaded = signal(false);
 
+  constructor(private recipeService: RecipeService, private imageService: ImageService) {}
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      this.fileName = file.name;
-      this.fileUploaded.set(true);
+      // send image to backend, wait for clean path
+      const formData: FormData = new FormData();
+      
+      // Append file
+      if (file) {
+        formData.append('image', file, file.name);
+        this.imageService.addImage(formData).subscribe((result) => {
+          if (result) {
+            this.recipe().image = result.toString();
+            this.fileName = file.name;
+            this.fileUploaded.set(true);
+          }
+        });
+      }
     }
   }
 
@@ -66,7 +82,7 @@ export class AddRecipeDialog {
 
   addTag(tagName: string): void {
     if (tagName && tagName.trim() !== '') {
-      const newTag = { name: tagName.trim() };
+      const newTag = { id: 0, name: tagName.trim() };
       this.recipe().tags.push(newTag);
       this.tagInput.nativeElement.value = '';
     }

@@ -7,10 +7,12 @@ const PORT = 8181;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, '/images/'),
-  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
+  filename: (req, file, cb) => cb(null, `${Date.now()}-${crypto.randomUUID()}`)
 });
 
 const images = multer({ storage });
+
+app.use(express.json());
 
 // Define a basic GET route
 app.get('/', (req, res) => {
@@ -24,12 +26,12 @@ app.get('/recipes/', async (req, res) => {
 
     let sqlQuery = `SELECT 
     r.*,
-    json_agg(t) AS tags
+    COALESCE(json_agg(t) FILTER (WHERE t.id IS NOT NULL), '[]') AS tags
 FROM 
     recipes AS r
-JOIN 
+LEFT OUTER JOIN 
     recipesXtags rxt ON r.id = rxt.recipeid
-JOIN
+LEFT OUTER JOIN
     tags t ON rxt.tagid = t.id
 GROUP BY 
     r.id, r.name
@@ -47,7 +49,7 @@ ORDER BY
   }
 });
 
-app.post('/recipes/add', async (req, res) => {
+app.post('/recipes/add/', async (req, res) => {
   let client;
   try {
     client = await pool.connect();
@@ -59,7 +61,25 @@ app.post('/recipes/add', async (req, res) => {
     VALUES
     ($1, $2, $3);
     `;
-    const result = await client.query(sqlInsertRecipe, [recipe.name, recipe.image, recipe.description]);
+
+    let sqlGetRecipes = `
+    SELECT 
+    r.*,
+    COALESCE(json_agg(t) FILTER (WHERE t.id IS NOT NULL), '[]') AS tags
+FROM 
+    recipes AS r
+LEFT OUTER JOIN 
+    recipesXtags rxt ON r.id = rxt.recipeid
+LEFT OUTER JOIN
+    tags t ON rxt.tagid = t.id
+GROUP BY 
+    r.id, r.name
+ORDER BY
+  r.id asc;
+    `;
+    
+    const insert = await client.query(sqlInsertRecipe, [recipe.name, recipe.image, recipe.description]);
+    const result = await client.query(sqlGetRecipes);
 
     res.json(result.rows);
   } catch (err) {
@@ -75,14 +95,11 @@ app.post('/images/add/', images.single('image'), (req, res) => {
     return res.status(400).send('No valid image to upload.');
   }
 
-  res.send({
-    message: 'Image upload successful',
-    filename: req.file.filename,
-    path: req.file.path
-  })
+  console.log(req.file.path);
+  res.json(req.file.path);
 });
 
-app.get('/users/', async (req, res) => {
+/*app.get('/users/', async (req, res) => {
   let client;
   try {
     client = await pool.connect();
@@ -96,7 +113,7 @@ app.get('/users/', async (req, res) => {
   } finally {
     if (client) client.release();
   }
-});
+});*/
 
 // Start the server
 app.listen(PORT, () => {});

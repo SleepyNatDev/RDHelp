@@ -5,7 +5,7 @@
       <mat-label>Recipe Name</mat-label>
       <input matInput name="name" [(ngModel)]="recipe().name" />
     </mat-form-field>
-    <input type="file" class="file-input" accept="image/png, image/jpeg" (change)="onFileSelected($event)" #fileUpload>
+    <input type="file" name="image" class="file-input" accept="image/png, image/jpeg" (change)="onFileSelected($event)" #fileUpload>
     <div [ngClass]="{ 'file-upload': true, 'clickable': !fileUploaded() }" appDndFiles (click)="handleFileUpload()" (dragover)="$event.preventDefault()" (drop)="onDrop($event)">
       <mat-label class="elipses">{{fileName || "Upload Image"}}</mat-label>
       <mat-icon [hidden]="!fileUploaded()" class="clickable" (click)="removeFile()">cancel</mat-icon>
@@ -17,8 +17,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Tags</mat-label>
       <mat-chip-grid #tagList>
-        <!-- Display existing tags -->
-        @for (tag of recipe().tags; track tag.name) {
+        @for (tag of recipe().tags; track tag.id) {
           <mat-chip [removable]="true" (removed)="removeTag(tag)">
             {{ tag.name }}
             <mat-icon matChipRemove>cancel</mat-icon>

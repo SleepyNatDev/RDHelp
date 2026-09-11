@@ -1,5 +1,5 @@
 <div class="flex flex-horizontal">
-    <div class="flex-content left">
+    <div [hidden]="true" class="flex-content left">
         <button matMiniFab class="left on-top-1" (click)="openAddRecipeDialog()">
             <mat-icon>add</mat-icon>
         </button>
@@ -11,13 +11,13 @@
                     {{currRecipe.name}}
                 </mat-card-title>
             </mat-card-header>
-            <img mat-card-image class="recipeImage" src="https://grilledcheesesocial.com/wp-content/uploads/2025/07/Cheeseburger-Macaroni-Recipe-Homemade-Hamburger-Helper-8.jpg" alt="Food">
+            <img mat-card-image class="recipeImage" src="{{currRecipe.image}}" alt="Food">
             <mat-card-content>
                 {{currRecipe.description}}
             </mat-card-content>
             <mat-card-footer class="makeSomeSpace scroll-horizontal">
                 <mat-chip-set>
-                    @for (tag of currRecipe.tags; track tag.name) {
+                    @for (tag of currRecipe.tags; track tag.id) {
                         <mat-chip>{{ tag.name }}</mat-chip>
                     } @empty {
                         <mat-chip>No Tags</mat-chip>

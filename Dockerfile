@@ -12,4 +12,4 @@ WORKDIR /usr/share/nginx/html
 COPY --from=angular /app/dist/RDToolbelt/browser ./
 COPY default.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 8080
+EXPOSE 8180

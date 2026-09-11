@@ -25,8 +25,10 @@ export class Recipes {
 
   constructor(private recipeService: RecipeService) {
     this.recipeService.getRecipes().subscribe(recipes => {
-      this.recipes_available = recipes;
-      this.recipes_shown.set(this.recipes_available);
+      if (recipes) {
+        this.recipes_available = recipes;
+        this.recipes_shown.set(this.recipes_available);
+      }
     });
   }
 
@@ -44,12 +46,11 @@ export class Recipes {
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
         // send recipe object to backend, wait for ok
-
-        // refresh recipes
-        result.id = this.recipes_available.length;
-        this.recipes_available.push(result);
-        this.recipes_shown.set(this.recipes_available);
-        this.cdRef.detectChanges();
+        this.recipeService.addRecipe(result).subscribe((updatedList) => {
+          this.recipes_available = updatedList as Recipe[];
+          this.recipes_shown.set(this.recipes_available);
+          this.cdRef.detectChanges();
+        });
       }
     });
   }
