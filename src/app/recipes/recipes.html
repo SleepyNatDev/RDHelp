@@ -1,5 +1,5 @@
 <div class="flex flex-horizontal">
-    <div [hidden]="true" class="flex-content left">
+    <div class="flex-content left">
         <button matMiniFab class="left on-top-1" (click)="openAddRecipeDialog()">
             <mat-icon>add</mat-icon>
         </button>
@@ -25,7 +25,5 @@
                 </mat-chip-set>
             </mat-card-footer>
         </mat-card>
-    } @empty {
-        <h1>Submit some recipes!</h1>
     }
 </div>

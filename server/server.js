@@ -2,7 +2,9 @@ const express = require('express');
 const pool = require('./dbconnect');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
+require('dotenv').config();
 const app = express();
+const { expressjwt: jwt } = require("express-jwt");
 const PORT = 8181;
 
 const storage = multer.diskStorage({
@@ -12,7 +14,7 @@ const storage = multer.diskStorage({
 
 const images = multer({ storage });
 
-app.use(express.json());
+app.use([express.json(), expressjwt]);
 
 // Define a basic GET route
 app.get('/', (req, res) => {
@@ -20,6 +22,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/recipes/', async (req, res) => {
+  
   let client;
   try {
     client = await pool.connect();
@@ -49,7 +52,7 @@ ORDER BY
   }
 });
 
-app.post('/recipes/add/', async (req, res) => {
+app.post('/recipes/add/', jwt({ secret: process.env.JWT_SECRET, algorithms: ["ES256"] }), async (req, res) => {
   let client;
   try {
     client = await pool.connect();
@@ -90,7 +93,7 @@ ORDER BY
   }
 });
 
-app.post('/images/add/', images.single('image'), (req, res) => {
+app.post('/images/add/', jwt({ secret: process.env.JWT_SECRET, algorithms: ["ES256"] }), images.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).send('No valid image to upload.');
   }
