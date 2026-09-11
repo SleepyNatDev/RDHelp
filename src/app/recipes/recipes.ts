@@ -7,6 +7,7 @@ import { Recipe } from '../recipe';
 import { Tag } from '../tag';
 import { MatDialog } from '@angular/material/dialog';
 import { AddRecipeDialog } from '../add-recipe-dialog/add-recipe-dialog';
+import { RecipeService } from '../recipe-service';
 
 @Component({
   imports: [MatButtonModule, MatIconModule, MatCardModule, MatChipsModule],
@@ -18,42 +19,16 @@ export class Recipes {
   readonly dialog = inject(MatDialog);
   readonly cdRef = inject(ChangeDetectorRef);
 
-  test_tag1: Tag = {
-    name: 'heart healthy'
-  };
-  test_tag2: Tag = {
-    name: 'diabetic diet'
-  };
-  test_tag3: Tag = {
-    name: 'ketogenic'
-  };
-  test_tags: Tag[] = [
-    this.test_tag1,
-    this.test_tag2,
-    this.test_tag3
-  ];
-
-  test_recipe: Recipe = {
-    id: 0,
-    name: 'test',
-    image: 'test',
-    description: 'testing testing 1 2 3 testing',
-    tags: this.test_tags
-  };
-  test_recipe2: Recipe = {
-    id: 1,
-    name: 'test',
-    image: 'test',
-    description: 'testing testing 1 2 3 testing testing',
-    tags: this.test_tags
-  };
-
-  recipes_available: Recipe[] = [
-    this.test_recipe,
-    this.test_recipe2
-  ];
+  recipes_available: Recipe[] = [];
 
   recipes_shown = signal(this.recipes_available);
+
+  constructor(private recipeService: RecipeService) {
+    this.recipeService.getRecipes().subscribe(recipes => {
+      this.recipes_available = recipes;
+      this.recipes_shown.set(this.recipes_available);
+    });
+  }
 
   openAddRecipeDialog() {
     var recipe_add = {
@@ -68,6 +43,9 @@ export class Recipes {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
+        // send recipe object to backend, wait for ok
+
+        // refresh recipes
         result.id = this.recipes_available.length;
         this.recipes_available.push(result);
         this.recipes_shown.set(this.recipes_available);
