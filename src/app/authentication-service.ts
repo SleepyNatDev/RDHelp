@@ -11,12 +11,17 @@ export class AuthenticationService {
     private refreshMilli: number = 60 * 60 * 1000; // 1 hour
     private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+    get isLoggedIn() {
+        return this.loggedIn.asObservable();
+    }
+
     constructor(private http: HttpClient) {
         this.loggedIn.next(false);
-        this.http.get('/api/auth/authenticated/', { withCredentials: true }).subscribe(() => {
-            this.loggedIn.next(true);
-            this.refreshAccessToken();
-        });
+        this.refreshAccessToken();
+    }
+
+    authenticated() {
+        return this.loggedIn.getValue();
     }
 
     login(fd: FormData) {
@@ -32,13 +37,9 @@ export class AuthenticationService {
     }
 
     logout() {
-        this.http.get('/api/auth/logout/', {}).subscribe(() => {
+        this.http.get('/api/auth/logout/', { withCredentials: true }).subscribe(() => {
             this.loggedIn.next(false);
         });
-    }
-
-    get isLoggedIn() {
-        return this.loggedIn.asObservable();
     }
 
     private scheduleRefresh() {

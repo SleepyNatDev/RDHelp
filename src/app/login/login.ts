@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,6 +7,8 @@ import { MatFormField } from "@angular/material/form-field";
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { AuthenticationService } from '../authentication-service';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [
@@ -25,10 +27,18 @@ import { AuthenticationService } from '../authentication-service';
 export class Login {
   @ViewChild('loginForm') loginForm!: NgForm;
   showPassword = false;
-  loggedIn: any;
+  loggedIn: Observable<boolean>;
 
-  constructor(private authService: AuthenticationService) {
+  constructor(private authService: AuthenticationService, private router: Router) {
     this.loggedIn = this.authService.isLoggedIn;
+    this.loggedIn.subscribe((val) => {
+      if (val) {
+        this.router.navigate(['/']);
+      }
+    });
+    if (this.authService.authenticated()) {
+      this.router.navigate(['/']);
+    }
   }
 
   onSubmit() {

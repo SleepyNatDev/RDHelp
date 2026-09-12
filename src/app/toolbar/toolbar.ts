@@ -5,6 +5,9 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { RouterLink } from "@angular/router";
 import { LocalStorage } from '../local-storage';
 import { MatMenuModule } from '@angular/material/menu';
+import { AuthenticationService } from '../authentication-service';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   imports: [
@@ -13,7 +16,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatIconButton, 
     MatIcon, 
     RouterLink,
-    MatMenuModule
+    MatMenuModule,
+    CommonModule
   ],
   selector: 'app-toolbar',
   styleUrl: './toolbar.scss',
@@ -21,13 +25,16 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class Toolbar {
   darkMode = signal(false);
-  constructor(localStorageService: LocalStorage) {
-    if (localStorageService.get("darkMode") == "true") {
+  loggedIn: Observable<boolean>;
+
+  constructor(private localStorageService: LocalStorage, private authService: AuthenticationService) {
+    this.loggedIn = this.authService.isLoggedIn;
+    if (this.localStorageService.get("darkMode") == "true") {
       this.darkMode.set(true);
       document.body.classList.toggle("dark-mode");
     }
     effect(() => {
-      localStorageService.save("darkMode", String(this.darkMode()));
+      this.localStorageService.save("darkMode", String(this.darkMode()));
     });
   }
 

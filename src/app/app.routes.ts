@@ -6,6 +6,9 @@ import { MealPlans } from './meal-plans/meal-plans';
 import { Recipes } from './recipes/recipes';
 import { MsjCalc } from './msj-calc/msj-calc';
 import { Login } from './login/login';
+import { anonymousGuard } from './anonymous-guard';
+import { authGuard } from './auth-guard';
+import { Dashboard } from './dashboard/dashboard';
 
 export const routes: Routes = [
     {
@@ -17,6 +20,13 @@ export const routes: Routes = [
         path: 'login',
         component: Login,
         title: 'Login - RDToolbelt',
+        canActivate: [anonymousGuard],
+    },
+    {
+        path: 'dashboard',
+        component: Dashboard,
+        title: 'Dashboard - RDToolbelt',
+        canActivate: [authGuard],
     },
     {
         path: 'bmi-calc',

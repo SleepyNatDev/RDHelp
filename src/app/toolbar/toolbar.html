@@ -24,9 +24,19 @@
             {{ this.darkMode() == true ? "bedtime" : "bedtime_off" }}
         </mat-icon>
     </button>
-    <a routerLink="/login">
-        <button matIconButton>
-            <mat-icon>login</mat-icon>
-        </button>
-    </a>
+    @if (!(loggedIn | async)) {
+        <a routerLink="/login">
+            <button matIconButton>
+                <mat-icon>login</mat-icon>
+            </button>
+        </a>
+    }
+    @else {
+        <a routerLink="/dashboard">
+            <button matIconButton>
+                <mat-icon>account_circle</mat-icon>
+            </button>
+        </a>
+    }
+    
 </mat-toolbar>

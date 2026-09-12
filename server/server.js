@@ -32,6 +32,12 @@ function fromRefreshCookie(req) {
   return null;
 }
 
+process.on('SIGTERM', () => {
+  server.close(() => {
+    process.exit(0);
+  });
+});
+
 app.use([express.json(), cookieParser()]);
 
 app.use(cors({
@@ -68,10 +74,6 @@ app.post('/auth/signup/', async (req, res) => {
   } finally {
     if (client) client.release();
   }
-});
-
-app.get('/auth/authenticated/', ejwt({ secret: SECRET_KEY, algorithms: ["HS256"], getToken: fromCookie }), async (req, res) => {
-  res.json({ status: 'ok' });
 });
 
 app.post('/auth/login/', async (req, res) => {
@@ -120,29 +122,40 @@ app.post('/auth/login/', async (req, res) => {
   }
 });
 
+app.get('/auth/logout/', async (req, res) => {
+  res.cookie('accessToken', '', {
+    httpOnly: true,
+    sameSite: 'strict',
+    maxAge: 0
+  });
+
+  res.cookie('refreshToken', '', {
+    httpOnly: true,
+    sameSite: 'strict',
+    maxAge: 0
+  });
+
+  res.json({ status: 'ok'});
+});
+
 app.get('/auth/refresh/', ejwt({ secret: SECRET_KEY, algorithms: ["HS256"], getToken: fromRefreshCookie }), async (req, res) => {
-  let cookie = req.cookies.refreshToken;
-  let verification = jwt.verify(cookie, SECRET_KEY);
-  if (verification) {
-    const accessToken = jwt.sign({ userid: verification.userid }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '1h' });
-    const refreshToken = jwt.sign({ userid: verification.userid }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '7d' });
+  let verified = jwt.verify(req.cookies.refreshToken, SECRET_KEY);
+  const accessToken = jwt.sign({ userid: verified.userid }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '1h' });
+  const refreshToken = jwt.sign({ userid: verified.userid }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '7d' });
 
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      sameSite: 'strict',
-      maxAge: 1000 * 60 * 60
-    });
+  res.cookie('accessToken', accessToken, {
+    httpOnly: true,
+    sameSite: 'strict',
+    maxAge: 1000 * 60 * 60
+  });
 
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      sameSite: 'strict',
-      maxAge: 1000 * 60 * 60 * 24 * 7
-    });
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    sameSite: 'strict',
+    maxAge: 1000 * 60 * 60 * 24 * 7
+  });
 
-    res.json({ status: 'ok' });
-  } else {
-    res.status(401).json({ error: 'Not authorized.'})
-  }
+  res.json({ status: 'ok' });
 });
 
 app.get('/recipes/', async (req, res) => {
