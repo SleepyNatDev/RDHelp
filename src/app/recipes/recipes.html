@@ -1,5 +1,5 @@
 <div class="flex flex-horizontal">
-    <div class="flex-content left">
+    <div [hidden]="!( loggedIn | async )" class="flex-content left">
         <button matMiniFab class="left on-top-1" (click)="openAddRecipeDialog()">
             <mat-icon>add</mat-icon>
         </button>

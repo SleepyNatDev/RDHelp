@@ -4,7 +4,11 @@ const bcrypt = require('bcrypt');
 const multer = require('multer');
 require('dotenv').config();
 const app = express();
-const { expressjwt: jwt } = require("express-jwt");
+const { expressjwt: ejwt } = require("express-jwt");
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const SECRET_KEY = process.env.JWT_SECRET;
 const PORT = 8181;
 
 const storage = multer.diskStorage({
@@ -14,11 +18,131 @@ const storage = multer.diskStorage({
 
 const images = multer({ storage });
 
-app.use([express.json(), expressjwt]);
+function fromCookie(req) {
+  if (req.cookies && req.cookies.accessToken) {
+    return req.cookies.accessToken;
+  }
+  return null;
+}
+
+function fromRefreshCookie(req) {
+  if (req.cookies && req.cookies.refreshToken) {
+    return req.cookies.refreshToken;
+  }
+  return null;
+}
+
+app.use([express.json(), cookieParser()]);
+
+app.use(cors({
+  origin: 'http://localhost:8180', // Replace with Angular URL
+  credentials: true
+}));
 
 // Define a basic GET route
 app.get('/', (req, res) => {
-  res.send('v1.0.0');
+  res.json('v1.0.0');
+});
+
+app.post('/auth/signup/', async (req, res) => {
+  let client;
+  
+  try {
+    client = await pool.connect();
+
+    let clientPass = req.body.password;
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const clientHash = await bcrypt.hash(clientPass, salt);
+
+    let sql = `
+    INSERT INTO users (name, email, password)
+    VALUES
+    ($1, $2, $3);
+    `;
+
+    const insert = await client.query(sql, [req.body.username, req.body.email, clientHash]);
+    res.json({ status: 'ok' });
+  } catch (err) {
+    res.status(500).json({ error: err });
+  } finally {
+    if (client) client.release();
+  }
+});
+
+app.get('/auth/authenticated/', ejwt({ secret: SECRET_KEY, algorithms: ["HS256"], getToken: fromCookie }), async (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+app.post('/auth/login/', async (req, res) => {
+  let client;
+  
+  try {
+    client = await pool.connect();
+    let sql = `SELECT id, password, verified FROM users where email = $1`
+    let hashPass = await client.query(sql, [req.body.email]);
+
+    let clientPass = req.body.password;
+
+    if (hashPass.rowCount == 0) {
+      throw new Error('Wrong email or password.');
+    }
+    const passMatch = await bcrypt.compare(clientPass, hashPass.rows[0].password);
+    if (passMatch) {
+      if (hashPass.rows[0].verified) {
+        const accessToken = jwt.sign({ userid: hashPass.rows[0].id }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '1h' });
+        const refreshToken = jwt.sign({ userid: hashPass.rows[0].id }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '7d' });
+
+        res.cookie('accessToken', accessToken, {
+          httpOnly: true,
+          sameSite: 'strict',
+          maxAge: 1000 * 60 * 60
+        });
+
+        res.cookie('refreshToken', refreshToken, {
+          httpOnly: true,
+          sameSite: 'strict',
+          maxAge: 1000 * 60 * 60 * 24 * 7
+        });
+
+        res.json({ status: 'ok' });
+      } else {
+        throw new Error('User not verified.');
+      }
+    } else {
+      throw new Error('Wrong email or password.');
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.error });
+  } finally {
+    if (client) client.release();
+  }
+});
+
+app.get('/auth/refresh/', ejwt({ secret: SECRET_KEY, algorithms: ["HS256"], getToken: fromRefreshCookie }), async (req, res) => {
+  let cookie = req.cookies.refreshToken;
+  let verification = jwt.verify(cookie, SECRET_KEY);
+  if (verification) {
+    const accessToken = jwt.sign({ userid: verification.userid }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '1h' });
+    const refreshToken = jwt.sign({ userid: verification.userid }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '7d' });
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 1000 * 60 * 60
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'strict',
+      maxAge: 1000 * 60 * 60 * 24 * 7
+    });
+
+    res.json({ status: 'ok' });
+  } else {
+    res.status(401).json({ error: 'Not authorized.'})
+  }
 });
 
 app.get('/recipes/', async (req, res) => {
@@ -52,7 +176,7 @@ ORDER BY
   }
 });
 
-app.post('/recipes/add/', jwt({ secret: process.env.JWT_SECRET, algorithms: ["ES256"] }), async (req, res) => {
+app.post('/recipes/add/', ejwt({ secret: SECRET_KEY, algorithms: ["HS256"], getToken: fromCookie }), async (req, res) => {
   let client;
   try {
     client = await pool.connect();
@@ -93,7 +217,7 @@ ORDER BY
   }
 });
 
-app.post('/images/add/', jwt({ secret: process.env.JWT_SECRET, algorithms: ["ES256"] }), images.single('image'), (req, res) => {
+app.post('/images/add/', ejwt({ secret: SECRET_KEY, algorithms: ["HS256"], getToken: fromCookie }), images.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).send('No valid image to upload.');
   }

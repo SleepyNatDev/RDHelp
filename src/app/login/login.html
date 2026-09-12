@@ -6,23 +6,21 @@
     <div class="flex-content flex flex-horizontal">
         <mat-card>
             <mat-card-content>
-                <form>
+                <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
                     <mat-form-field>
                         <mat-label>Email</mat-label>
-                        <input matInput type="email" name="email" />
+                        <input matInput type="email" name="email" ngModel email required/>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Password</mat-label>
-                        <input matInput type="{{showPassword ? 'text' : 'password'}}" name="password" />
-                        <button mat-icon-button matSuffix (click)="showPassword = !showPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
+                        <input matInput type="{{showPassword ? 'text' : 'password'}}" name="password" ngModel/>
+                        <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
                             <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                     </mat-form-field>
+                    <button matButton type="submit" [disabled]="loginForm.invalid">Login</button>
                 </form>
             </mat-card-content>
-            <mat-card-actions>
-                <button matButton>Login</button>
-            </mat-card-actions>
         </mat-card>
     </div>
 </div>

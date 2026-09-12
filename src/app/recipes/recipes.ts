@@ -4,13 +4,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { Recipe } from '../recipe';
-import { Tag } from '../tag';
 import { MatDialog } from '@angular/material/dialog';
 import { AddRecipeDialog } from '../add-recipe-dialog/add-recipe-dialog';
 import { RecipeService } from '../recipe-service';
+import { AuthenticationService } from '../authentication-service';
+import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
-  imports: [MatButtonModule, MatIconModule, MatCardModule, MatChipsModule],
+  imports: [MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, CommonModule],
   selector: 'app-recipes',
   styleUrl: './recipes.scss',
   templateUrl: './recipes.html',
@@ -18,18 +20,21 @@ import { RecipeService } from '../recipe-service';
 export class Recipes {
   readonly dialog = inject(MatDialog);
   readonly cdRef = inject(ChangeDetectorRef);
+  loggedIn: Observable<boolean>;
 
   recipes_available: Recipe[] = [];
 
   recipes_shown = signal(this.recipes_available);
 
-  constructor(private recipeService: RecipeService) {
+  constructor(private recipeService: RecipeService, private authService: AuthenticationService) {
     this.recipeService.getRecipes().subscribe(recipes => {
       if (recipes) {
         this.recipes_available = recipes;
         this.recipes_shown.set(this.recipes_available);
       }
     });
+
+    this.loggedIn = this.authService.isLoggedIn;
   }
 
   openAddRecipeDialog() {
